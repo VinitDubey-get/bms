@@ -1,0 +1,460 @@
+/* Footer.css */
+
+.footer {
+  background-color: #6a3de8;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+.footer-section {
+  padding: 30px 20px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header Styles */
+.footer-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.footer-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  color: white;
+}
+
+.footer-subtitle {
+  font-size: 1rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+/* Main Content Layout */
+.main-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-bottom: 25px;
+  align-items: start;
+}
+
+/* Contact Section (Left Side) - Horizontal Row */
+.contact-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.contact-item {
+  text-align: center;
+  flex: 1;
+  padding: 10px;
+}
+
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.contact-title {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin: 0 0 8px 0;
+}
+
+.contact-detail {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  opacity: 0.9;
+}
+
+/* Map Styles (Right Side) */
+.map-container {
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 100%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.map-placeholder h3 {
+  font-size: 1.2rem;
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* Updated Social Media and Footer Bottom - Single Line Layout */
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+/* Social Section - Left Side */
+.social-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.follow-title {
+  font-size: 1rem;
+  margin: 0;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.social-links {
+  display: flex;
+  gap: 12px;
+}
+
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.social-link:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Copyright Section - Right Side */
+.copyright-section {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.copyright {
+  font-size: 0.85rem;
+  margin: 0 0 5px 0;
+  opacity: 0.8;
+}
+
+.developer {
+  font-size: 0.75rem;
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* Responsive Design */
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+  .footer-section {
+    padding: 40px 30px 25px;
+  }
+  
+  .footer-title {
+    font-size: 2rem;
+  }
+  
+  .main-content {
+    gap: 40px;
+  }
+  
+  .contact-section {
+    gap: 30px;
+  }
+  
+  .map-container {
+    height: 220px;
+  }
+  
+  .follow-title {
+    font-size: 1.1rem;
+  }
+  
+  .social-link {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* Tablet and Medium Screens */
+@media (max-width: 1024px) {
+  .footer-section {
+    padding: 30px 20px 20px;
+  }
+  
+  .main-content {
+    gap: 25px;
+  }
+  
+  .contact-section {
+    gap: 15px;
+  }
+  
+  .contact-item {
+    padding: 8px;
+  }
+  
+  .map-container {
+    height: 180px;
+  }
+  
+  .footer-bottom {
+    gap: 20px;
+  }
+  
+  .social-section {
+    gap: 12px;
+  }
+}
+
+/* Small Tablet */
+@media (max-width: 768px) {
+  .footer-section {
+    padding: 25px 15px 15px;
+  }
+  
+  .footer-title {
+    font-size: 1.6rem;
+  }
+  
+  .footer-subtitle {
+    font-size: 0.95rem;
+  }
+  
+  .main-content {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .contact-section {
+    flex-direction: column;
+    gap: 15px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .contact-item {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .map-container {
+    height: 150px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: 15px;
+    padding-top: 20px;
+  }
+  
+  .social-section {
+    justify-content: center;
+    gap: 12px;
+  }
+  
+  .copyright-section {
+    text-align: center;
+  }
+}
+
+/* Mobile Landscape */
+@media (max-width: 640px) and (orientation: landscape) {
+  .footer-section {
+    padding: 20px 15px 15px;
+  }
+  
+  .main-content {
+    gap: 15px;
+  }
+  
+  .contact-section {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 10px;
+  }
+  
+  .contact-item {
+    flex-basis: calc(50% - 10px);
+    padding: 8px;
+  }
+  
+  .map-container {
+    height: 120px;
+  }
+  
+  .footer-bottom {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding-top: 15px;
+  }
+  
+  .social-section {
+    gap: 8px;
+  }
+  
+  .follow-title {
+    font-size: 0.9rem;
+  }
+  
+  .social-link {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .copyright-section {
+    text-align: right;
+  }
+  
+  .copyright, .developer {
+    font-size: 0.7rem;
+  }
+}
+
+/* Mobile Portrait */
+@media (max-width: 480px) {
+  .footer-section {
+    padding: 20px 12px 12px;
+  }
+  
+  .footer-title {
+    font-size: 1.4rem;
+  }
+  
+  .footer-subtitle {
+    font-size: 0.9rem;
+  }
+  
+  .contact-section {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .contact-item {
+    padding: 8px;
+  }
+  
+  .contact-title {
+    font-size: 0.85rem;
+  }
+  
+  .contact-detail {
+    font-size: 0.75rem;
+  }
+  
+  .icon-container {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .map-container {
+    height: 120px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 15px;
+  }
+  
+  .social-section {
+    gap: 10px;
+  }
+  
+  .follow-title {
+    font-size: 0.9rem;
+  }
+  
+  .social-link {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .copyright {
+    font-size: 0.8rem;
+  }
+  
+  .developer {
+    font-size: 0.7rem;
+  }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 360px) {
+  .footer-section {
+    padding: 15px 10px 10px;
+  }
+  
+  .footer-title {
+    font-size: 1.2rem;
+  }
+  
+  .footer-subtitle {
+    font-size: 0.85rem;
+  }
+  
+  .contact-title {
+    font-size: 0.8rem;
+  }
+  
+  .contact-detail {
+    font-size: 0.7rem;
+  }
+  
+  .icon-container {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .map-container {
+    height: 100px;
+  }
+  
+  .follow-title {
+    font-size: 0.85rem;
+  }
+  
+  .social-link {
+    width: 28px;
+    height: 28px;
+  }
+  
+  .social-links {
+    gap: 8px;
+  }
+  
+  .copyright {
+    font-size: 0.75rem;
+  }
+  
+  .developer {
+    font-size: 0.65rem;
+  }
+}
