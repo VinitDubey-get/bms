@@ -1,0 +1,20 @@
+.content-area {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  background-color: #ffffff;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #111827;
+}
+
+.section-content {
+  background-color: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
