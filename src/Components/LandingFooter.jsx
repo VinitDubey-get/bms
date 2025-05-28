@@ -29,7 +29,7 @@ const Footer = () => {
               <h3 className="contact-title">Our Address</h3>
               <div className="contact-detail">
                Tilka Manjhi Bihar University, Bhagalpur (Bihar)<br />
-                Pune-411 007, India
+                Bihar - 812007 , India
               </div>
             </div>
 
@@ -57,7 +57,7 @@ const Footer = () => {
           {/* Map Right Side */}
           <div className="map-container">
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3783.2615504737893!2d73.8567437!3d18.5204303!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2c6ef871e0c81%3A0x6b8a1c1b3b9f7e6f!2sSavitribai%20Phule%20Pune%20University!5e0!3m2!1sen!2sin!4v1640995200000!5m2!1sen!2sin"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.645206117374!2d86.9595622!3d25.2488723!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39f04a742f137b4f%3A0xf7ae40a61d2c0a46!2sTilka%20Manjhi%20Bhagalpur%20University!5e0!3m2!1sen!2sin!4v1748337043721!5m2!1sen!2sin" 
               width="100%"
               height="100%"
               style={{ border: 0 }}

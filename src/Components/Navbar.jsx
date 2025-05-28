@@ -35,7 +35,7 @@ const Navbar = () => {
 
             {/* Desktop Navigation Links */}
             <div className="desktop-nav">
-              {['/', '/society', '/membership', '/publications', '/gallery', '/council', '/awards', '/donation', '/contact'].map((path, index) => {
+              {['/', '/society', '/membership', '/journals', '/gallery', '/council', '/awards', '/donation', '/contact'].map((path, index) => {
                 const labels = ['Home', 'Society', 'Membership', 'Journals', 'Gallery', 'Council', 'Awards & Prizes', 'Donation', 'Contact us'];
                 return (
                   <NavLink

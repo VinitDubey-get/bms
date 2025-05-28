@@ -5,7 +5,7 @@ import HeroSection from '../Components/HeroSection';
 import WhyChoose from '../Components/WhyChoose';
 import NewsAnnouncements from '../Components/News&Announcement';
 import CTA from '../Components/CTA';
-import Gallery from '../Components/Gallery';
+import Carausel from '../Components/Carausel';
 import Estabilier from '../Components/Eastabiler';
 import LandingFooter from'../Components/LandingFooter';
 import './HomePage.css';
@@ -21,7 +21,7 @@ const HomePage = () => {
       <WhyChoose/>
       <NewsAnnouncements />
       <CTA/>
-      <Gallery/>
+      <Carausel/>
       <Estabilier />  
       <LandingFooter/>
     </>
