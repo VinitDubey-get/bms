@@ -11,6 +11,7 @@ import JournalPage from './Pages/JournalsPage.jsx';
 import DonationPage from './Pages/DonationPage.jsx';
 import AwardsPage from './Pages/AwardsPage.jsx';
 import ContactPage from './Pages/ContactPage.jsx';
+import PrivateRoute from './Components/PrivateRoute.jsx';
 
 
 const App = () => {
@@ -18,7 +19,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin" element={<PrivateRoute> <AdminPage/></PrivateRoute>} />
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/society" element={<SocietyPage />} />
         <Route path="/membership" element={<MembershipPage />} />

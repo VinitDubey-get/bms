@@ -2,10 +2,11 @@ import React from 'react';
 import Awards from './sections/Awards.jsx';
 import Councils from './sections/Councils.jsx';
 import Donors from './sections/Donors.jsx';
-import Gallery from './GallerySection.jsx';
+import Gallery from './sections/Gallery.jsx';
 import Journals from './sections/Journals.jsx';
 import Members from './sections/Members.jsx';
 import Notices from './sections/Notices.jsx';
+
 
 import './ContentArea.css';
 
@@ -33,6 +34,7 @@ const ContentArea = ({ activeSection }) => {
       
       case 'Councils':
        return <Councils/>;
+
     }
   };
 

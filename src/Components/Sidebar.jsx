@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import './Sidebar.css';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 
 const sections = [
-  'Awards & Prizes', 'Members', 'Gallery', 'Journals', 'Councils', 'Donors', 'Notices', 'Logout'
+  'Awards & Prizes', 'Members', 'Gallery', 'Journals', 'Councils', 'Donors', 'Notices'
 ];
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const navigate = useNavigate();
 
-  // Check if screen is mobile
+  // Check screen size
   useEffect(() => {
-    const checkScreenSize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-
+    const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
     checkScreenSize();
     window.addEventListener('resize', checkScreenSize);
-
     return () => window.removeEventListener('resize', checkScreenSize);
   }, []);
 
-  // Close mobile menu when clicking outside (but not when clicking menu items)
+  // Click outside to close mobile menu
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (isMobileMenuOpen && 
@@ -30,11 +30,9 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
         setIsMobileMenuOpen(false);
       }
     };
-
     if (isMobile) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMobileMenuOpen, isMobile]);
 
@@ -44,12 +42,20 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
 
   const handleSectionClick = (section) => {
     setActiveSection(section);
-    // Don't close mobile menu when clicking sections - only close via hamburger icon
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (err) {
+      console.error('Logout failed:', err);
+    }
   };
 
   return (
     <>
-      {/* Hamburger Menu - Only visible on mobile */}
+      {/* Hamburger menu for mobile */}
       {isMobile && (
         <div 
           className={`hamburger-menu ${isMobileMenuOpen ? 'active' : ''}`}
@@ -71,21 +77,31 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
 
       {/* Sidebar */}
       <div className={`sidebar ${isMobile && isMobileMenuOpen ? 'open' : ''}`}>
-        <div className='sidebar-header'>
+        <div className="sidebar-header">
           <h1>BMS</h1>
         </div>
 
-        <nav className='sidebar-nav'>
+        <nav className="sidebar-nav">
           {sections.map(section => (
             <button 
               key={section} 
-              className={`sidebar-button ${activeSection === section ? 'active' : ''} ${section === 'Logout' ? 'logout' : ''}`}
+              className={`sidebar-button ${activeSection === section ? 'active' : ''}`}
               onClick={() => handleSectionClick(section)}
             >
               {section}
             </button>
           ))}
         </nav>
+
+        {/* Logout Button - pinned to bottom */}
+        <div className="sidebar-logout-container">
+          <button 
+            className="sidebar-button logout"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </div>
       </div>
     </>
   );

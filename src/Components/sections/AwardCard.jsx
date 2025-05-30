@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './AwardCard.css';
 
-const AwardCard = ({ image, name, prize }) => {
+const AwardCard = ({ image, name, prize, onDelete, isDeleting }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
 
@@ -14,12 +14,27 @@ const AwardCard = ({ image, name, prize }) => {
     setImageLoaded(true);
   };
 
+  const handleDeleteClick = (e) => {
+    e.stopPropagation(); // Prevent card click events
+    onDelete();
+  };
+
   return (
-    <div className={`award-card ${!imageLoaded ? 'loading' : ''}`}>
+    <div className={`award-card ${!imageLoaded ? 'loading' : ''} ${isDeleting ? 'deleting' : ''}`}>
       {/* Award Trophy Icon */}
       <div className="award-icon">
         🏆
       </div>
+      
+      {/* Delete Button */}
+      <button 
+        className="delete-button" 
+        onClick={handleDeleteClick}
+        disabled={isDeleting}
+        title="Delete Award"
+      >
+        {isDeleting ? '⏳' : '🗑️'}
+      </button>
       
       {/* Image Section */}
       <div style={{ position: 'relative' }}>
@@ -58,9 +73,18 @@ const AwardCard = ({ image, name, prize }) => {
         <h4>{name}</h4>
         <p>{prize}</p>
         <div className="prize-badge">
-          {prize}
+          <div className='prize-name'> {prize}</div>
+         
         </div>
       </div>
+
+      {/* Deleting Overlay */}
+      {isDeleting && (
+        <div className="deleting-overlay">
+          <div className="deleting-spinner">🔄</div>
+          <p>Deleting...</p>
+        </div>
+      )}
     </div>
   );
 };

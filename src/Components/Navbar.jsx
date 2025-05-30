@@ -1,8 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink,useNavigate } from 'react-router-dom';
+import AuthModal from './AuthModal';
+import { signOut } from 'firebase/auth';
+import { auth } from '../firebase';
+
 import './Navbar.css';
 
 const Navbar = () => {
+  const navigate=useNavigate();
+  const [showAuthModal,setShowAuthModal]=useState(false);
+  const [user,setUser]=useState(null);
+
+
+  const handleAuthSuccess=(userData)=>{
+    setUser(userData);
+    console.log('user logged in ',userData);
+    navigate('/admin');
+    
+  }
+  const handleSignOut = async () => {
+  try {
+    await signOut(auth);
+    setUser(null);
+    console.log('Signed out successfully');
+  } catch (error) {
+    console.error('Error signing out:', error);
+  }
+};
+
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -51,7 +77,7 @@ const Navbar = () => {
 
             {/* Sign In Button - Desktop */}
             <div className="desktop-signin">
-              <button className="signin-button">Sign In</button>
+              <button className="signin-button"onClick={()=>setShowAuthModal(true)}>Sign In</button>
             </div>
 
             {/* Mobile menu button */}
@@ -92,10 +118,15 @@ const Navbar = () => {
 
             {/* Mobile Sign In Button */}
             <div className="mobile-signin">
-              <button className="signin-button mobile-signin-button">Sign In</button>
+              <button className="signin-button mobile-signin-button" onClick={()=>setShowAuthModal(true)}>Sign In</button>
             </div>
           </div>
         </div>
+        <AuthModal
+          isOpen={showAuthModal}
+          onClose={()=>setShowAuthModal(false)}
+          onAuthSuccess={handleAuthSuccess}
+        />
       </nav>
     </>
   );
