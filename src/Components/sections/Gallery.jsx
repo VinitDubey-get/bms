@@ -1,4 +1,4 @@
-// Gallery.jsx - Fixed Version with Better Cloudinary Configuration
+// Gallery.jsx - Fixed Version with Proper Heading Display
 import React, { useState, useEffect } from 'react';
 import { Upload, X, ImageIcon, Trash2, Plus, Eye } from 'lucide-react';
 import { 
@@ -28,15 +28,14 @@ const Gallery = () => {
 
   // Cloudinary configuration - Better environment variable handling
   const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
-  const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+  const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET || process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET2;
   const CLOUDINARY_API_KEY = process.env.REACT_APP_CLOUDINARY_API_KEY;
   
   // Debug configuration on component load
   useEffect(() => {
     console.log('=== Cloudinary Configuration Debug ===');
     console.log('REACT_APP_CLOUDINARY_CLOUD_NAME:', CLOUDINARY_CLOUD_NAME);
-    console.log('REACT_APP_CLOUDINARY_UPLOAD_PRESET:', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET);
-    console.log('REACT_APP_CLOUDINARY_UPLOAD_PRESET2:', process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET2);
+    console.log('REACT_APP_CLOUDINARY_UPLOAD_PRESET:', CLOUDINARY_UPLOAD_PRESET);
     console.log('REACT_APP_CLOUDINARY_API_KEY:', CLOUDINARY_API_KEY);
     console.log('All environment variables:', Object.keys(process.env).filter(key => key.startsWith('REACT_APP_')));
     
@@ -47,6 +46,31 @@ const Gallery = () => {
       
       setConfigError(`Missing environment variables: ${missingVars.join(', ')}`);
     }
+  }, [CLOUDINARY_CLOUD_NAME, CLOUDINARY_UPLOAD_PRESET]);
+
+  // Subscribe to Firestore gallery collection
+  useEffect(() => {
+    console.log('Setting up Firestore listener...');
+    const q = query(collection(db, 'gallery'), orderBy('created_at', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      console.log('Firestore snapshot received:', snapshot.docs.length, 'documents');
+      const imageList = snapshot.docs.map(doc => {
+        const data = doc.data();
+        console.log('Document ID:', doc.id);
+        console.log('Document data:', data);
+        console.log('Heading field:', data.heading);
+        return {
+          id: doc.id,
+          ...data
+        };
+      });
+      console.log('Processed images with headings:', imageList.map(img => ({ id: img.id, heading: img.heading })));
+      setImages(imageList);
+    }, (error) => {
+      console.error('Error fetching images:', error);
+    });
+
+    return () => unsubscribe();
   }, []);
 
   // Cloudinary upload function - Enhanced error handling
@@ -142,22 +166,6 @@ const Gallery = () => {
     }
   };
 
-  // Subscribe to Firestore gallery collection
-  useEffect(() => {
-    const q = query(collection(db, 'gallery'), orderBy('created_at', 'desc'));
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const imageList = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setImages(imageList);
-    }, (error) => {
-      console.error('Error fetching images:', error);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
   // Drag and drop handlers
   const handleDrag = (e) => {
     e.preventDefault();
@@ -228,13 +236,14 @@ const Gallery = () => {
     setIsUploading(true);
     try {
       console.log('Starting upload process...');
+      console.log('Upload data heading:', uploadData.heading);
       
       // Upload to Cloudinary
       const cloudinaryResponse = await uploadToCloudinary(uploadData.file);
       console.log('Upload successful:', cloudinaryResponse);
       
-      // Save to Firestore
-      await addDoc(collection(db, 'gallery'), {
+      // Prepare data for Firestore with explicit heading
+      const firestoreData = {
         heading: uploadData.heading.trim(),
         image_link: cloudinaryResponse.secure_url,
         public_id: cloudinaryResponse.public_id,
@@ -243,9 +252,14 @@ const Gallery = () => {
         file_type: uploadData.file.type,
         width: cloudinaryResponse.width,
         height: cloudinaryResponse.height
-      });
+      };
+      
+      console.log('Saving to Firestore with data:', firestoreData);
+      
+      // Save to Firestore
+      const docRef = await addDoc(collection(db, 'gallery'), firestoreData);
 
-      console.log('Image saved to Firestore successfully');
+      console.log('Image saved to Firestore with ID:', docRef.id);
 
       // Reset form
       setUploadData({ heading: '', file: null });
@@ -305,19 +319,41 @@ const Gallery = () => {
     setPreviewImage(imageUrl);
   };
 
+  // Format date helper
+  const formatDate = (timestamp) => {
+    if (!timestamp) return 'Unknown date';
+    
+    let date;
+    if (timestamp.toDate) {
+      // Firestore Timestamp
+      date = timestamp.toDate();
+    } else if (timestamp instanceof Date) {
+      date = timestamp;
+    } else {
+      return 'Unknown date';
+    }
+    
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
+  // Format file size helper
+  const formatFileSize = (bytes) => {
+    if (!bytes) return '';
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return Math.round(bytes / 1024) + ' KB';
+    return Math.round(bytes / (1024 * 1024) * 100) / 100 + ' MB';
+  };
+
   return (
     <div className="gallery-container">
       <div className="gallery-wrapper">
         {/* Configuration Error Alert */}
         {configError && (
-          <div style={{
-            background: 'rgba(239, 68, 68, 0.1)',
-            border: '1px solid rgba(239, 68, 68, 0.3)',
-            borderRadius: '8px',
-            padding: '16px',
-            marginBottom: '24px',
-            color: '#fca5a5'
-          }}>
+          <div className="config-error">
             <strong>Configuration Error:</strong> {configError}
             <br />
             <small>Please check your .env file and ensure all required Cloudinary environment variables are set.</small>
@@ -342,11 +378,11 @@ const Gallery = () => {
 
         {/* Stats */}
         <div className="gallery-stats">
-          <div className="stat-card glass-card">
+          <div className="stat-card">
             <div className="stat-number">{images.length}</div>
             <div className="stat-label">Total Images</div>
           </div>
-          <div className="stat-card glass-card">
+          <div className="stat-card">
             <div className="stat-number">
               {Math.round(images.reduce((acc, img) => acc + (img.file_size || 0), 0) / 1024 / 1024 * 100) / 100}
             </div>
@@ -355,59 +391,61 @@ const Gallery = () => {
         </div>
 
         {/* Gallery Grid */}
-        <div className="gallery-grid">
-          {images.map((image) => (
-            <div key={image.id} className="glass-card image-card">
-              <div className="image-container">
-                <img
-                  src={image.image_link}
-                  alt={image.heading}
-                  loading="lazy"
-                />
-                <div className="image-overlay">
-                  <div className="overlay-actions">
-                    <button
-                      onClick={() => handlePreview(image.image_link)}
-                      className="btn btn-preview tooltip"
-                      data-tooltip="Preview Image"
-                    >
-                      <Eye size={18} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(image.id, image.public_id)}
-                      className="btn btn-danger tooltip"
-                      data-tooltip="Delete Image"
-                      disabled={deleteLoading === image.id}
-                    >
-                      {deleteLoading === image.id ? (
-                        <div className="spinner-small"></div>
-                      ) : (
-                        <Trash2 size={18} />
-                      )}
-                    </button>
+        {images.length > 0 ? (
+          <div className="gallery-grid">
+            {images.map((image) => {
+              console.log('Rendering image card for:', image.id, 'with heading:', image.heading);
+              return (
+                <div key={image.id} className="image-card">
+                  <div className="image-container">
+                    <img
+                      src={image.image_link}
+                      alt={image.heading || 'Gallery Image'}
+                      loading="lazy"
+                      onError={(e) => {
+                        console.error('Image failed to load:', image.image_link);
+                        e.target.style.display = 'none';
+                      }}
+                      onLoad={() => {
+                        console.log('Image loaded successfully:', image.image_link);
+                      }}
+                    />
+                    <div className="image-overlay">
+                      <div className="overlay-actions">
+                        <button
+                          onClick={() => handlePreview(image.image_link)}
+                          className="btn-preview tooltip"
+                          data-tooltip="Preview Image"
+                        >
+                          <Eye size={18} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(image.id, image.public_id)}
+                          className="btn-danger tooltip"
+                          data-tooltip="Delete Image"
+                          disabled={deleteLoading === image.id}
+                        >
+                          {deleteLoading === image.id ? (
+                            <div className="spinner-small"></div>
+                          ) : (
+                            <Trash2 size={18} />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="image-info">
+                    <h3 className="image-title">
+                      {image.heading && image.heading.trim() ? image.heading : 'Untitled Image'}
+                    </h3>
+                   
                   </div>
                 </div>
-              </div>
-              <div className="image-info">
-                <h3 className="image-title">{image.heading}</h3>
-                <div className="image-meta">
-                  <span className="image-date">
-                    {image.created_at?.toDate ? 
-                      image.created_at.toDate().toLocaleDateString() : 
-                      'Unknown date'
-                    }
-                  </span>
-                  <span className="image-size">
-                    {image.file_size ? `${Math.round(image.file_size / 1024)} KB` : ''}
-                  </span>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Empty State */}
-        {images.length === 0 && (
+              );
+            })}
+          </div>
+        ) : (
+          /* Empty State */
           <div className="empty-state">
             <ImageIcon size={64} />
             <h3>No images yet</h3>
@@ -428,7 +466,7 @@ const Gallery = () => {
       {showUploadModal && (
         <div className="modal-backdrop" onClick={closeModal}>
           <div 
-            className="modal-content glass-card"
+            className="modal-content"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-header">
@@ -476,7 +514,7 @@ const Gallery = () => {
                     <div className="preview-info">
                       <p className="preview-filename">{uploadData.file.name}</p>
                       <p className="preview-filesize">
-                        {Math.round(uploadData.file.size / 1024)} KB
+                        {formatFileSize(uploadData.file.size)}
                       </p>
                     </div>
                     <button 
@@ -511,18 +549,22 @@ const Gallery = () => {
 
               {/* Heading Input */}
               <div className="form-group">
-                <label className="form-label">Image Title</label>
+                <label className="form-label">Image Title *</label>
                 <input
                   type="text"
                   value={uploadData.heading}
-                  onChange={(e) => setUploadData(prev => ({ 
-                    ...prev, 
-                    heading: e.target.value 
-                  }))}
+                  onChange={(e) => {
+                    console.log('Heading input changed:', e.target.value);
+                    setUploadData(prev => ({ 
+                      ...prev, 
+                      heading: e.target.value 
+                    }));
+                  }}
                   className="form-input"
                   placeholder="Enter a descriptive title for your image..."
                   maxLength={100}
                   disabled={isUploading || !!configError}
+                  required
                 />
                 <div className="character-count">
                   {uploadData.heading.length}/100 characters
