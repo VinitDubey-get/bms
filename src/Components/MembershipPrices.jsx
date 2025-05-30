@@ -57,9 +57,7 @@ const MembershipPrices = () => {
   ];
 
   const handleBuyNow = (membership) => {
-    setSelectedCard(membership);
-    // Here you can implement the logic to open a new page or modal
-    window.open(`/purchase?membership=${membership.id}`, '_blank');
+    window.open(`/form?type=${encodeURIComponent(membership.title)}`, '_blank');
   };
 
   return (

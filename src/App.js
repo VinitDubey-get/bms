@@ -5,6 +5,7 @@ import HomePage from './Pages/HomePage.jsx';
 import AdminPage from './Pages/AdminPage.jsx';
 import GalleryPage from './Pages/GalleryPage.jsx';
 import MembershipPage from './Pages/MembershipPage.jsx';
+import MembershipForm from './Pages/MembershipForm';
 import CouncilPage from './Pages/CouncilPage.jsx';
 import SocietyPage from './Pages/SocietyPage.jsx';
 import JournalPage from './Pages/JournalsPage.jsx';
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="/gallery" element={<GalleryPage />} />
         <Route path="/society" element={<SocietyPage />} />
         <Route path="/membership" element={<MembershipPage />} />
+        <Route path="/form" element={<MembershipForm />} />
         <Route path="/journals" element={<JournalPage />} />
         <Route path="/council" element={<CouncilPage />} />
         <Route path="/awards" element={<AwardsPage />} />
