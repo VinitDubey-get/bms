@@ -1,13 +1,14 @@
-
 /* How It Works Section */
 .how-it-works {
     padding: 80px 0;
 }
 
+/* Process Cards */
 .process-cards {
     display: flex;
     justify-content: space-between;
     gap: 30px;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
 }
 
 .process-card {
@@ -19,6 +20,8 @@
     transition: transform 0.3s ease;
     flex: 1;
     position: relative;
+    min-width: 250px; /* Ensure cards don't get too small */
+    margin-bottom: 20px; /* Add spacing between rows */
 }
 
 .process-card:hover {
@@ -46,4 +49,54 @@
     width: 100%;
     height: 150px;
     object-fit: cover;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Tablets and smaller devices */
+@media (max-width: 768px) {
+    .process-cards {
+        justify-content: center;
+    }
+
+    .process-card {
+        flex: 1 0 45%; /* Two cards per row */
+        max-width: 45%; /* Ensure cards don't stretch too wide */
+        margin-bottom: 20px; /* Space between cards */
+    }
+
+    .card-number {
+        top: 10px;
+        right: 10px;
+        width: 25px;
+        height: 25px;
+    }
+
+    .card-image {
+        height: 120px; /* Smaller image for tablets */
+    }
+}
+
+/* Small screens (mobile devices) */
+@media (max-width: 480px) {
+    .process-cards {
+        flex-direction: column; /* Stack cards vertically */
+        align-items: center;
+    }
+
+    .process-card {
+        flex: 1 0 90%; /* Single card per row on small screens */
+        max-width: 90%;
+    }
+
+    .card-number {
+        top: 5px;
+        right: 5px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .card-image {
+        height: 100px; /* Smaller image for mobile */
+    }
 }

@@ -160,9 +160,19 @@
 }
 
 .developer {
-  font-size: 0.75rem;
-  margin: 0;
-  opacity: 0.7;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: white;
+}
+
+.developer a {
+  font-weight: bold;
+  color: white;
+  text-decoration: none; /* Removes the underline */
+}
+
+.developer a:hover {
+  text-decoration: underline; /* Underline on hover */
 }
 
 /* Responsive Design */
@@ -401,9 +411,21 @@
     font-size: 0.8rem;
   }
   
-  .developer {
-    font-size: 0.7rem;
-  }
+ .developer {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: white;
+}
+
+.developer a {
+  font-weight: bold;
+  color: white;
+  text-decoration: none; /* Removes the underline */
+}
+
+.developer a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
 }
 
 /* Extra Small Mobile */
@@ -454,7 +476,20 @@
     font-size: 0.75rem;
   }
   
-  .developer {
-    font-size: 0.65rem;
-  }
+ .developer {
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  color: white;
+}
+
+.developer a {
+  font-weight: bold;
+  color: white;
+  text-decoration: none; /* Removes the underline */
+}
+
+.developer a:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
 }
