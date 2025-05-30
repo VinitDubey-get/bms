@@ -41,7 +41,7 @@ const ContentArea = ({ activeSection }) => {
 
   return (
     <div className="content-area">
-      <h2 className="section-title">{activeSection}</h2>
+      {/* <h2 className="section-title">{activeSection}</h2> */}
       <div className="section-content">
          {renderSection()}
       </div>
