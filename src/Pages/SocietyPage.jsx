@@ -1,7 +1,7 @@
 // src/pages/HomePage.jsx
 import React from 'react';
 import Navbar from '../Components/Navbar';
-import GallerySection from '../Components/GallerySection';
+import SocietySection from '../Components/TheSociety';
 import './HomePage.css';
 
 
@@ -11,7 +11,7 @@ const HomePage = () => {
     <>
       <Navbar /> 
         <div style={{ paddingTop: '5rem' }}></div>
-      <GallerySection/>
+      <SocietySection/>
 
         <footer className='app-footer'>
         @ 2025 BMS. All rights reserved.

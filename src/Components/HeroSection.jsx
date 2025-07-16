@@ -11,27 +11,30 @@ const HeroSection = () => {
   const handleJoinClick = () => {
     navigate('/society'); // ✅ Navigate to society page
   };
-
+   const handleGetClick = () => {
+    navigate('/membership'); // ✅ Navigate to society page
+  };
+ 
   return (
-    <section className="hero">
-      <div className="container">
-        <div className="hero-content">
+    <section className="hero-banner">
+      <div className="hero-container">
+        <div className="hero-text-content">
           <h1>Welcome To Bihar Mathematical Society</h1>
-          <div className="subhead">
-            <img src="/assets/logo.png" alt="check" className="icon-check" />
+          <div className="hero-text-subtitle">
+            <img src="/assets/logo.png" alt="check" className="hero-icon" />
             Founded in - 1958 in Bhagalpur, Bihar 
           </div>
-          <div className="cta-buttons">
-            <a href="#how-it-works" className="btn btn-primary">Get Started</a>
-          <button className="btn btn-secondary" onClick={handleJoinClick}>Show More</button>
+          <div className="hero-buttons">
+             <button className="hero-btn hero-btn-primary" onClick={handleGetClick}>Get Started</button>
+          <button className="hero-btn hero-btn-secondary" onClick={handleJoinClick}>Show More</button>
           </div>
         </div>
-        <div className="hero-images">
+        <div className="hero-animation-container">
           <Lottie
             path="/assets/society-animation.json" 
             loop
             autoplay
-            className="student-animation"
+            className="hero-animation"
           />
         </div>
       </div>

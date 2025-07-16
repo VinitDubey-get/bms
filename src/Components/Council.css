@@ -1,0 +1,233 @@
+/* Council Component Styles */
+.bmis-container {
+  max-width: 1152px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.current-council-card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.75rem;
+}
+
+.council-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .council-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.council-member {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease-in-out;
+}
+
+.council-member:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.council-member.president {
+  background-color: #faf5ff;
+  border-color: #d8b4fe;
+}
+
+.member-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.member-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-color: #8b5cf6;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+}
+
+.member-icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: white;
+}
+
+.member-details h3 {
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.member-details p {
+  font-size: 0.875rem;
+  color: #8b5cf6;
+  margin: 0;
+  font-weight: 500;
+}
+
+.past-leadership-card {
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+}
+
+.past-leadership-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.past-leadership-header svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #4b5563;
+  margin-right: 0.5rem;
+}
+
+.past-leadership-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.past-leadership-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .past-leadership-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.past-role-section {
+  background-color: #f9fafb;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.past-role-title {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.past-role-title svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #4b5563;
+  margin-right: 0.5rem;
+}
+
+.past-members-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.past-member-item {
+  background-color: white;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  border-left: 4px solid #c084fc;
+  transition: all 0.2s ease-in-out;
+}
+
+.past-member-item:hover {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateX(2px);
+}
+
+.past-member-item p {
+  margin: 0;
+}
+
+.past-member-name {
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.past-member-term {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin-top: 0.25rem;
+}
+
+.placeholder-item {
+  border: 2px dashed #d1d5db;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  text-align: center;
+  transition: all 0.2s ease-in-out;
+}
+
+.placeholder-item:hover {
+  border-color: #9ca3af;
+  background-color: #f3f4f6;
+}
+
+.placeholder-text {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Responsive improvements */
+@media (max-width: 640px) {
+  .bmis-container {
+    padding: 1rem;
+  }
+  
+  .current-council-card,
+  .past-leadership-card {
+    padding: 1rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+  }
+  
+  .member-details h3 {
+    font-size: 1rem;
+  }
+  
+  .past-leadership-header h2 {
+    font-size: 1.25rem;
+  }
+}

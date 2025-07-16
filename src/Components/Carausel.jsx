@@ -1,19 +1,23 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { collection, getDocs, query, orderBy, limit } from 'firebase/firestore';
+import { db } from '../firebase'; // Adjust path to your Firebase config
 import './Carausel.css';
 
 const Carousel = ({ 
-    title = "Recent Award Winners",
-    images = [],
-    autoSlideInterval = 4000,
+    title = "Recent Events & Awards",
+    autoSlideInterval = 2000,
     showControls = true,
     showIndicators = true 
 }) => {
     const [currentSlide, setCurrentSlide] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
+    const [images, setImages] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const trackRef = useRef(null);
     const autoSlideRef = useRef(null);
 
-    // Default images if none provided
+    // Default fallback images if Firebase fails
     const defaultImages = [
         {
             id: 1,
@@ -42,8 +46,55 @@ const Carousel = ({
         }
     ];
 
-    const slideImages = images.length > 0 ? images : defaultImages;
-    const totalSlides = slideImages.length;
+    // Fetch images from Firebase Firestore
+    const fetchImagesFromFirestore = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            
+            // Create query to get top 5 images from gallery collection
+            // Ordered by created_at in descending order (most recent first)
+            const q = query(
+                collection(db, 'gallery'),
+                orderBy('created_at', 'desc'),
+                limit(6)
+            );
+            
+            const querySnapshot = await getDocs(q);
+            const fetchedImages = [];
+            
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                fetchedImages.push({
+                    id: doc.id,
+                    src: data.image_link || data.url || data.src, // Handle different field names
+                    alt: data.alt || data.heading || data.title || `Gallery Image ${fetchedImages.length + 1}`,
+                    ...data // Include all other data if needed
+                });
+            });
+            
+            if (fetchedImages.length > 0) {
+                setImages(fetchedImages);
+            } else {
+                // If no images found, use default images
+                setImages(defaultImages);
+            }
+        } catch (err) {
+            console.error('Error fetching images from Firestore:', err);
+            setError(err.message);
+            // Fallback to default images on error
+            setImages(defaultImages);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Fetch images on component mount
+    useEffect(() => {
+        fetchImagesFromFirestore();
+    }, []);
+
+    const totalSlides = images.length;
 
     const updateCarousel = () => {
         if (trackRef.current) {
@@ -89,14 +140,14 @@ const Carousel = ({
     }, [currentSlide]);
 
     useEffect(() => {
-        if (!isHovered) {
+        if (!isHovered && !loading) {
             startAutoSlide();
         } else {
             stopAutoSlide();
         }
 
         return () => stopAutoSlide();
-    }, [isHovered, autoSlideInterval]);
+    }, [isHovered, autoSlideInterval, loading]);
 
     // Touch/swipe handling
     const [touchStart, setTouchStart] = useState(0);
@@ -124,12 +175,38 @@ const Carousel = ({
         }
     };
 
+    // Retry function for manual refresh
+    const handleRetry = () => {
+        fetchImagesFromFirestore();
+    };
+
+    if (loading) {
+        return (
+            <div className="award-carousel-container">
+                <h1 className="award-carousel-title">{title}</h1>
+                <div className="award-carousel-loading">
+                    <div className="loading-spinner"></div>
+                    <p>Loading images...</p>
+                </div>
+            </div>
+        );
+    }
+
     return (
-        <div className="carousel-container">
-            <h1 className="carousel-title">{title}</h1>
+        <div className="award-carousel-container">
+            <h1 className="award-carousel-title">{title}</h1>
+            
+            {error && (
+                <div className="award-carousel-error">
+                    <p>Error loading images: {error}</p>
+                    <button onClick={handleRetry} className="retry-button">
+                        Retry
+                    </button>
+                </div>
+            )}
             
             <div 
-                className="carousel-wrapper"
+                className="award-carousel-wrapper"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
                 onTouchStart={handleTouchStart}
@@ -139,14 +216,14 @@ const Carousel = ({
                 {showControls && (
                     <>
                         <button 
-                            className="carousel-controls prev-btn" 
+                            className="award-carousel-controls award-prev-btn" 
                             onClick={previousSlide}
                             aria-label="Previous slide"
                         >
                             ❮
                         </button>
                         <button 
-                            className="carousel-controls next-btn" 
+                            className="award-carousel-controls award-next-btn" 
                             onClick={nextSlide}
                             aria-label="Next slide"
                         >
@@ -155,22 +232,27 @@ const Carousel = ({
                     </>
                 )}
                 
-                <div className="carousel-track" ref={trackRef}>
-                    {slideImages.map((image, index) => (
+                <div className="award-carousel-track" ref={trackRef}>
+                    {images.map((image, index) => (
                         <div 
                             key={image.id || index}
-                            className={`carousel-slide ${index === currentSlide ? 'active' : ''}`}
+                            className={`award-carousel-slide ${index === currentSlide ? 'active' : ''}`}
                         >
-                            <div className="award-card">
+                            <div className="award-winner-card">
                                 <img 
                                     src={image.src} 
                                     alt={image.alt || `Award Winner ${index + 1}`}
-                                    className="award-image"
+                                    className="award-winner-image"
                                     loading="lazy"
                                     onError={(e) => {
                                         e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTgwSDIyNVYyMjBIMTc1VjE4MFoiIGZpbGw9IiNEMUQ1REIiLz4KPHA+PHRleHQgeD0iMjAwIiB5PSIyNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IiM5Q0E0QUYiPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3A+Cjwvc3ZnPgo=';
                                     }}
                                 />
+                                {image.heading && (
+                                    <div className="award-winner-info">
+                                        <h3>{image.heading}</h3>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     ))}
@@ -178,11 +260,11 @@ const Carousel = ({
             </div>
             
             {showIndicators && (
-                <div className="carousel-indicators">
-                    {slideImages.map((_, index) => (
+                <div className="award-carousel-indicators">
+                    {images.map((_, index) => (
                         <button
                             key={index}
-                            className={`indicator ${index === currentSlide ? 'active' : ''}`}
+                            className={`award-indicator ${index === currentSlide ? 'active' : ''}`}
                             onClick={() => goToSlide(index)}
                             aria-label={`Go to slide ${index + 1}`}
                         />

@@ -1,8 +1,8 @@
 // src/pages/HomePage.jsx
 import React from 'react';
 import Navbar from '../Components/Navbar';
-import GallerySection from '../Components/GallerySection';
-import './HomePage.css';
+import JournalSection from '../Components/Journal';
+
 
 
 
@@ -11,7 +11,7 @@ const HomePage = () => {
     <>
       <Navbar /> 
         <div style={{ paddingTop: '5rem' }}></div>
-      <GallerySection/>
+      <JournalSection/>
 
         <footer className='app-footer'>
         © 2025 Copyright BMS , All rights reserved.
