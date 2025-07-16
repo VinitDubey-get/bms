@@ -1,39 +1,39 @@
 /* Community Section */
-.community {
-    padding: 80px 0;
+.bms-community {
+    padding: 80px;
     background-color:  #6a3de8;
     color: white;
 }
 
-.community .container {
+.bms-community .bms-container {
     display: flex;
     align-items: center;
     gap: 60px;
 }
 
-.community-content {
+.bms-community-content {
     flex: 1;
 }
 
-.community-content h2 {
+.bms-community-content h2 {
     color: var(--white);
 }
 
-.community-content p {
+.bms-community-content p {
     color: var(--light-purple);
     margin-bottom: 30px;
 }
 
-.community-content .btn {
+.bmscommunity-content .btn {
     background-color: var(--secondary-color);
     color: var(--white);
 }
 
-.community-content .btn:hover {
+.bms-community-content .btn:hover {
     background-color: #e69500;
 }
 
-.community-image {
+.bms-community-image {
     flex: 1;
     display: flex;
     justify-content: flex-end;

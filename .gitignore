@@ -11,6 +11,10 @@
 # production
 /build
 
+#Api's 
+.env
+/.env
+
 # misc
 .env
 .DS_Store

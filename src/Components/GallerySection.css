@@ -1,13 +1,13 @@
 /* Gallery.css */
 
-.gallery-container {
+.bms-gallery-container {
   min-height: 100vh;
   background: #f5f5f5;
   padding: 40px 20px;
   font-family: 'Arial', sans-serif;
 }
 
-.gallery-header {
+.bms-gallery-header {
   margin-bottom: 40px;
   display: flex;
   justify-content: center;
@@ -16,7 +16,7 @@
   height: 100px; /* Optional: define a height for vertical centering */
 }
 
-.gallery-header h1 {
+.bms-gallery-header h1 {
   font-size: 3rem;
   font-weight: bold;
   color: #6a3de8;

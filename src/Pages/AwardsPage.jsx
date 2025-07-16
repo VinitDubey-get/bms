@@ -1,23 +1,24 @@
 // src/pages/HomePage.jsx
 import React from 'react';
 import Navbar from '../Components/Navbar';
-import GallerySection from '../Components/GallerySection';
 import './HomePage.css';
+import './AwardsPage.css';
 
 
 
-const HomePage = () => {
+const AwardsPage = () => {
   return (
     <>
       <Navbar /> 
         <div style={{ paddingTop: '5rem' }}></div>
-      <GallerySection/>
-
+    
+        <h1 className='Disclaimer'>Coming Soon</h1>
+         <div style={{ paddingTop: '15rem' }}></div>
         <footer className='app-footer'>
-        @ 2025 BMS. All rights reserved.
+        © 2025 Copyright BMS , All rights reserved.
       </footer>
     </>
   );
 };
 
-export default HomePage;
+export default AwardsPage;

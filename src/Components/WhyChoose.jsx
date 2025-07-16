@@ -5,7 +5,7 @@ const WhyChoose = () => {
   const processSteps = [
     {
       number: '1',
-      title: ' Publish your own Research Papers',
+      title: ' Publish your Research Papers',
       subtitle: 'For Publishing your own Research Papers in reputed Journals.',
     
     },
@@ -23,16 +23,16 @@ const WhyChoose = () => {
   ];
 
   return (
-    <section className="how-it-works">
-      <div className="container">
-        <div className="section-header">
-          <span className="section-tag">BECOME A MEMBER</span>
+    <section className="bms-how-it-works">
+      <div className="bms-container">
+        <div className="bms-section-header">
+          <span className="bms-section-tag">BECOME A MEMBER</span>
           <h2>Why Should You Join the Bihar Mathematical Society ?</h2>
         </div>
-        <div className="process-cards">
+        <div className="bms-process-cards">
           {processSteps.map((step) => (
-            <div className="process-card" key={step.number}>
-              <div className="card-number">{step.number}</div>
+            <div className="bms-process-card" key={step.number}>
+              <div className="bms-card-number">{step.number}</div>
               <h3>{step.title}</h3>
               <p>{step.subtitle}</p>
               
