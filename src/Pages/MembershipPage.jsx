@@ -53,7 +53,7 @@ const MembershipPage = () => {
       
        <div style={{ paddingTop: '5rem' }}></div>
       <footer className='app-footer'>
-        @ 2025 BMS. All rights reserved.
+        © 2025 Copyright BMS , All rights reserved.
       </footer>
     </>
   );

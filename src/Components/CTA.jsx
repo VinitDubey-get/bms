@@ -11,15 +11,15 @@ const Community = () => {
   };
 
   return (
-    <section className="community">
-      <div className="container">
-        <div className="community-content">
+    <section className="bms-community">
+      <div className="bms-container">
+        <div className="bms-community-content">
           <h2>Join Our Mathematical Society</h2>
           <p>"Connect with mathematicians, researchers, and scholars across Bihar and beyond.....</p>
           <h3>Become a Member Now</h3>
           <button className="btn" onClick={handleJoinClick}>Join Now</button>
         </div>
-        <div className="community-image">
+        <div className="bms-community-image">
           <img src="/assets/logo.png" alt="Community" className="feature-image" />
         </div>
       </div>

@@ -14,7 +14,7 @@ const HomePage = () => {
       <GallerySection/>
 
         <footer className='app-footer'>
-        @ 2025 BMS. All rights reserved.
+        © 2025 Copyright BMS , All rights reserved.
       </footer>
     </>
   );

@@ -1,59 +1,102 @@
 // NewsAnnouncementsSection.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronRight, X, Calendar, Bell } from 'lucide-react';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase'; // Adjust the path based on your firebase.js location
 import './News&Announcement.css';
 
 const NewsAnnouncementsSection = () => {
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const announcements = [
-    {
-      id: 5,
-      title: "System Maintenance Scheduled",
-      content: "Our systems will undergo scheduled maintenance on Sunday, May 25th from 2:00 AM to 4:00 AM EST. During this time, some services may be temporarily unavailable.",
-      date: "May 22, 2025",
-      type: "maintenance"
-    },
-    
-    {
-      id: 2,
-      title: "New Feature Release",
-      content: "We're excited to announce the launch of our new dashboard analytics feature. Users can now access detailed insights and reports directly from their dashboard.",
-      date: "May 20, 2025",
-      type: "feature"
-    },
-    {
-      id: 3,
-      title: "Security Update",
-      content: "We've implemented enhanced security measures to protect your data. All users are advised to update their passwords and enable two-factor authentication.",
-      date: "May 18, 2025",
-      type: "security"
-    },
-   
-  ];
+  // Fetch announcements from Firebase
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'news_announcement'));
+        const fetchedAnnouncements = [];
+        
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          fetchedAnnouncements.push({
+            id: doc.id,
+            title: data.title,
+            content: data.content,
+            date: data.date && typeof data.date === 'object' && data.date.toDate 
+              ? data.date.toDate().toLocaleDateString('en-US', { 
+                  year: 'numeric', 
+                  month: 'long', 
+                  day: 'numeric' 
+                })
+              : data.date,
+            type: data.category,
+            createdAt: data.createdAt ? data.createdAt.toDate() : new Date()
+          });
+        });
+        
+        // Sort by createdAt in descending order (newest first)
+        fetchedAnnouncements.sort((a, b) => {
+          if (a.createdAt && b.createdAt) {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          }
+          return 0;
+        });
+        
+        setAnnouncements(fetchedAnnouncements);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching announcements:', error);
+        setLoading(false);
+      }
+    };
+
+    fetchAnnouncements();
+  }, []);
 
   const getTypeIcon = (type) => {
-    switch (type) {
-      case 'maintenance': return '🔧';
-      case 'feature': return '✨';
-      case 'security': return '🔒';
-      case 'partnership': return '🤝';
+    switch (type?.toLowerCase()) {
+      case 'conferences & seminars': return '🎓';
+      case 'research highlights': return '🔬';
+      case 'membership notices': return '👥';
+      case 'academic & student activities': return '📚';
+      case 'feature articles': return '📝';
+      case 'security & technical updates': return '🔒';
+      case 'general notices': return '📢';
       default: return '📢';
     }
   };
 
-  return (
-    <div className="news-section">
-      <div className="news-container">
-        {/* Main Card */}
-        <div className="news-card">
-          {/* Header */}
-          <div className="news-header">
-            <div className="header-content">
-              <Bell className="header-icon" />
-              <h1 className="header-title">News & Announcements</h1>
+  if (loading) {
+    return (
+      <div className="bms-news-section">
+        <div className="bms-news-container">
+          <div className="bms-news-card">
+            <div className="bms-news-header">
+              <div className="bms-header-content">
+                <Bell className="bms-header-icon" />
+                <h1 className="bms-header-title">News & Announcements</h1>
+              </div>
+              <p className="bms-header-subtitle">Loading announcements...</p>
             </div>
-            <p className="header-subtitle">Stay updated with our latest news and important announcements</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="bms-news-section">
+      <div className="bms-news-container">
+        {/* Main Card */}
+        <div className="bms-news-card">
+          {/* Header */}
+          <div className="bms-news-header">
+            <div className="bms-header-content">
+              <Bell className="bms-header-icon" />
+              <h1 className="bms-header-title">News & Announcements</h1>
+            </div>
+            <p className="bms-header-subtitle">Stay updated with our latest news and important announcements</p>
           </div>
 
           {/* Announcements List */}
@@ -65,7 +108,7 @@ const NewsAnnouncementsSection = () => {
                     <div className="announcement-header">
                       <span className="announcement-icon">{getTypeIcon(announcement.type)}</span>
                       <h3 className="announcement-title">{announcement.title}</h3>
-                      <span className={`announcement-badge ${announcement.type}`}>
+                      <span className={`announcement-badge ${announcement.type?.toLowerCase().replace(/\s+/g, '-')}`}>
                         {announcement.type}
                       </span>
                     </div>
@@ -80,15 +123,17 @@ const NewsAnnouncementsSection = () => {
             </div>
 
             {/* View More Button */}
-            <div className="view-more-container">
-              <button
-                onClick={() => setIsOverlayOpen(true)}
-                className="view-more-btn"
-              >
-                View More
-                <ChevronRight className="btn-icon" />
-              </button>
-            </div>
+            {announcements.length > 3 && (
+              <div className="view-more-container">
+                <button
+                  onClick={() => setIsOverlayOpen(true)}
+                  className="view-more-btn"
+                >
+                  View More
+                  <ChevronRight className="btn-icon" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -120,7 +165,7 @@ const NewsAnnouncementsSection = () => {
                       <div className="overlay-announcement-info">
                         <span className="overlay-announcement-icon">{getTypeIcon(announcement.type)}</span>
                         <h3 className="overlay-announcement-title">{announcement.title}</h3>
-                        <span className={`overlay-announcement-badge ${announcement.type}`}>
+                        <span className={`overlay-announcement-badge ${announcement.type?.toLowerCase().replace(/\s+/g, '-')}`}>
                           {announcement.type}
                         </span>
                       </div>

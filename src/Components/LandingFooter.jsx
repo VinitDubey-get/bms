@@ -3,10 +3,11 @@ import { MapPin, Mail, Phone, Facebook, Twitter, Instagram } from 'lucide-react'
 import './LandingFooter.css';
 
 const Footer = () => {
-  const handleSocialClick = (platform) => {
-    // You can add actual social media links here
-    console.log(`Opening ${platform}`);
-  };
+ 
+  const handleSocialClick = (url) => {
+  window.open(url, '_blank');
+};
+
 
   return (
     <footer className="footer">
@@ -69,30 +70,30 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Social Media Section */}
-        <div className="social-section">
-          <h3 className="contact-title">Follow Us</h3>
-          <div className="social-links">
-            <div
-              className="social-link"
-              onClick={() => handleSocialClick('Facebook')}
-            >
-              <Facebook size={20} />
-            </div>
-            <div
-              className="social-link"
-              onClick={() => handleSocialClick('Twitter')}
-            >
-              <Twitter size={20} />
-            </div>
-            <div
-              className="social-link"
-              onClick={() => handleSocialClick('Instagram')}
-            >
-              <Instagram size={20} />
-            </div>
-          </div>
-        </div>
+    {/* Social Media Section */}
+<div className="social-section">
+  <h3 className="contact-title">Follow Us</h3>
+  <div className="social-links">
+    <div
+      className="social-link"
+      onClick={() => handleSocialClick('https://www.facebook.com/profile.php?id=61578117084170')}
+    >
+      <Facebook size={20} />
+    </div>
+    <div
+      className="social-link"
+      onClick={() => handleSocialClick('https://twitter.com')}
+    >
+      <Twitter size={20} />
+    </div>
+    <div
+      className="social-link"
+      onClick={() => handleSocialClick('https://www.instagram.com/bms_bihar?igsh=MXhrMHR6NGk2aHRudQ==')}
+    >
+      <Instagram size={20} />
+    </div>
+  </div>
+</div>
 
         {/* Footer Bottom */}
         <div className="footer-bottom">
