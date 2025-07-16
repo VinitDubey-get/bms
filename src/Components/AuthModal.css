@@ -19,7 +19,6 @@
   overflow: hidden;        /* Prevent scrolling issues */
 }
 
-
 /* Modal Container */
 .auth-modal {
   background: white;
@@ -124,7 +123,7 @@
   color: #9ca3af;
 }
 
-/* Submit Button */
+/* Submit Button - Fixed Structure */
 .auth-submit-btn {
   background: linear-gradient(135deg, #8b5cf6, #a855f7);
   color: white;
@@ -139,6 +138,12 @@
   position: relative;
   overflow: hidden;
   font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 50px;
+  min-width: 120px;
 }
 
 .auth-submit-btn:hover:not(:disabled) {
@@ -160,7 +165,21 @@
   pointer-events: none;
 }
 
-/* Loading Spinner */
+/* Button content container */
+.auth-submit-btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Button text - prevents rotation */
+.auth-submit-btn-text {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Loading Spinner - Fixed */
 .loading-spinner {
   display: flex;
   align-items: center;
@@ -171,10 +190,17 @@
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid transparent;
-  border-top: 2px solid currentColor;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
   border-radius: 50%;
   animation: auth-spin 1s linear infinite;
+  flex-shrink: 0;
+}
+
+/* Loading text */
+.loading-text {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 /* Error Message */

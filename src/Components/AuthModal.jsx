@@ -3,7 +3,6 @@ import './AuthModal.css'; // Import the CSS file
 import {auth} from '../firebase';
 import {getAuth,signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut} from 'firebase/auth';
 
-
 // Mock Firebase functions for demo (replace with actual Firebase imports)
 const firebaseAuth = {
   signInWithEmailAndPassword: (email, password) => 
@@ -103,7 +102,7 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
           </button>
         </div>
 
-        <div className="auth-form">
+        <form onSubmit={handleAuth} className="auth-form">
           {error && (
             <div className="auth-error-message">
               <span className="error-icon">⚠</span>
@@ -167,20 +166,26 @@ const AuthModal = ({ isOpen, onClose, onAuthSuccess }) => {
           )}
 
           <button 
-            onClick={handleAuth}
+            type="submit"
             className={`auth-submit-btn ${loading ? 'loading' : ''}`}
             disabled={loading}
           >
-            {loading ? (
-              <span className="loading-spinner">
-                <span className="spinner"></span>
-                Loading...
-              </span>
-            ) : (
-              authMode === 'signin' ? 'Sign In' : 'Sign Up'
-            )}
+            <div className="auth-submit-btn-content">
+              {loading ? (
+                <>
+                  <div className="spinner"></div>
+                  <span className="loading-text">
+                    {authMode === 'signin' ? 'Signing In...' : 'Creating Account...'}
+                  </span>
+                </>
+              ) : (
+                <span className="auth-submit-btn-text">
+                  {authMode === 'signin' ? 'Sign In' : 'Sign Up'}
+                </span>
+              )}
+            </div>
           </button>
-        </div>
+        </form>
 
         <div className="auth-divider">
           <span className="divider-text">or</span>
